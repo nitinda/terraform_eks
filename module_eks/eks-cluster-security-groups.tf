@@ -11,13 +11,9 @@ resource "aws_security_group" "demo-security-group-eks-cluster" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = {
-    Name = "terraform-demo-eks-security-group-cluster"
-    Project = "${local.Project}"
-    Owner = "${local.Owner}"
-    Environment = "${local.Environment}"
-    BusinessUnit = "${local.BusinessUnit}"
-  }
+  tags = "${merge(var.common_tags, map(
+    "Name", "terraform-demo-eks-security-group-cluster",
+  ))}"
 }
 
 resource "aws_security_group_rule" "demo-security-group-rule-cluster-ingress-workstation-https" {

@@ -11,16 +11,10 @@ resource "aws_security_group" "demo-security-group-eks-worker-node" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = "${
-    map(
-     "Name", "terraform-demo-eks-security-group-worker-node",
-     "kubernetes.io/cluster/${var.cluster-name}", "owned",
-     "Project", "${local.Project}",
-     "Owner", "${local.Owner}",
-     "Environment", "${local.Environment}",
-     "BusinessUnit", "${local.BusinessUnit}"
-    )
-  }"
+  tags = "${merge(var.common_tags, map(
+    "Name", "terraform-demo-eks-security-group-worker-node",
+    "kubernetes.io/cluster/${var.cluster-name}", "owned",
+  ))}"
 }
 
 resource "aws_security_group_rule" "demo-node-ingress-self" {

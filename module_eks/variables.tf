@@ -1,23 +1,10 @@
 variable "cluster-name" {
   type    = "string"
 }
-
-locals {
-  common_tags = {
-    Project = "EKS POC"
-    Owner   = "Cloud Platform Team"
-    Environment = "prod"
-    BusinessUnit = "Platform Team"
-  }
+variable common_tags {
+  description = "Resources Tags"
+  type = "map"
 }
-
-locals {
-  Project = "EKS POC"
-  Owner   = "Platform Team"
-  Environment = "prod"
-  BusinessUnit = "Platform Team"
-}
-
 
 locals {
   workstation-external-cidr = "${chomp(data.http.demo-workstation-external-ip.body)}/32"

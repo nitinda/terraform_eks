@@ -1,13 +1,13 @@
-resource "kubernetes_namespace" "demo-kubernetes-namespace-nginx" {
+resource "kubernetes_namespace" "demo-kubernetes-namespace" {
   metadata {
     annotations {
-      name = "terraform-demo-kubernetes-annotation"
+      name = "terraform-demo-kubernetes-namespace-annotation"
     }
 
     labels {
-      mylabel = "terraform-demo-kubernetes-label"
+      mylabel = "terraform-demo-kubernetes-namespace-label"
     }
 
-    name = "terraform-demo-kubernetes-namespace-nginx"
+    name = "terraform-demo-kubernetes-namespace"
   }
 }

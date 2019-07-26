@@ -1,6 +1,6 @@
 resource "aws_iam_role" "demo-iam-role-worker-node" {
   name = "terraform-demo-iam-role-eks-worker-node"
-  tags = "${local.common_tags}"
+  tags = "${var.common_tags}"
 
   assume_role_policy = <<POLICY
 {
@@ -74,6 +74,18 @@ resource "aws_iam_role_policy" "demo-iam-role-poicy-worker-node" {
             "Action": [
                 "ec2:*Volume*",
                 "ec2:*Snapshot*"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "AllowEFS",
+            "Effect": "Allow",
+            "Action": [
+                "elasticfilesystem:DescribeMountTargets",
+                "elasticfilesystem:DescribeTags",
+                "elasticfilesystem:DescribeLifecycleConfiguration",
+                "elasticfilesystem:DescribeFileSystems",
+                "elasticfilesystem:DescribeMountTargetSecurityGroups"
             ],
             "Resource": "*"
         }

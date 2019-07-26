@@ -2,25 +2,18 @@ variable "cluster-name" {
   type    = "string"
 }
 
-locals {
-  common_tags = {
-    Project = "EKS POC"
-    Owner   = "Platform Team"
-    Environment = "prod"
-    BusinessUnit = "Platform Team"
-  }
-}
-
-locals {
-  Project = "EKS POC"
-  Owner   = "Platform Team"
-  Environment = "prod"
-  BusinessUnit = "Platform Team"
+variable common_tags {
+  description = "Resources Tags"
+  type = "map"
 }
 
 variable depends_on { default = [], type = "list"}
 
 variable "vpc_id" {
+  description = "description"
+}
+
+variable "vpc_cidr" {
   description = "description"
 }
 

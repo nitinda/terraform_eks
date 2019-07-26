@@ -8,7 +8,7 @@ resource "aws_security_group" "demo-security-group-efs" {
     from_port = 2049
     to_port   = 2049
     protocol  = "tcp"
-    cidr_blocks = ["${var.web_subnet_cidr}"]
+    cidr_blocks = ["${var.vpc_cidr}"]
   }
 
   egress {
@@ -18,14 +18,8 @@ resource "aws_security_group" "demo-security-group-efs" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = "${
-    map(
-     "Name", "terraform-demo-eks-security-group-worker-node",
-     "kubernetes.io/cluster/${var.cluster-name}", "owned",
-     "Project", "${local.Project}",
-     "Owner", "${local.Owner}",
-     "Environment", "${local.Environment}",
-     "BusinessUnit", "${local.BusinessUnit}"
-    )
-  }"
+  tags = "${merge(var.common_tags, map(
+    "Name", "terraform-demo-eks-security-efs",
+    "kubernetes.io/cluster/${var.cluster-name}", "owned",
+  ))}"
 }

@@ -2,18 +2,7 @@ variable "cluster-name" {
   type    = "string"
 }
 
-locals {
-  common_tags = {
-    Project = "EKS POC"
-    Owner   = "Platform Team"
-    Environment = "prod"
-    BusinessUnit = "Platform Team"
-  }
-}
-
-locals {
-  Project = "EKS POC"
-  Owner   = "Platform Team"
-  Environment = "prod"
-  BusinessUnit = "Platform Team"
+variable common_tags {
+  description = "Resources Tags"
+  type = "map"
 }

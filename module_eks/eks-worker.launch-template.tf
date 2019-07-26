@@ -25,7 +25,6 @@ resource "aws_launch_template" "demo-lt-eks-worker-node" {
   name_prefix   = "terraform-demo-lc-eks-worker-node-"
   description   = "This is lc template for eks worker nodes"
   image_id      = "${data.aws_ami.demo-ami-eks-worker-node.id}"
-  instance_type = "t3.small"
   ebs_optimized = false
 
   block_device_mappings {
@@ -49,23 +48,17 @@ resource "aws_launch_template" "demo-lt-eks-worker-node" {
   
   tag_specifications {
     resource_type = "instance"
-    tags = {
-      Name = "terraform-demo-lt-eks-worker-node-ec2"
-      Project = "${local.Project}"
-      Owner = "${local.Owner}"
-      Environment = "${local.Environment}"
-      BusinessUnit = "${local.BusinessUnit}"
-    }
+    tags = "${merge(var.common_tags, map(
+      "Name", "terraform-demo-lt-eks-worker-node-ec2",
+      "kubernetes.io/cluster/${var.cluster-name}", "owned",
+    ))}"
   }
   tag_specifications {
     resource_type = "volume"
-    tags = {
-      Name = "terraform-demo-lt-eks-worker-node-ec2"
-      Project = "${local.Project}"
-      Owner = "${local.Owner}"
-      Environment = "${local.Environment}"
-      BusinessUnit = "${local.BusinessUnit}"
-    }
+    tags = "${merge(var.common_tags, map(
+      "Name", "terraform-demo-lt-eks-worker-node-ec2",
+      "kubernetes.io/cluster/${var.cluster-name}", "owned",
+    ))}"
   }
 
   user_data = "${base64encode("${data.template_file.demo-eks-asg-userdata.rendered}")}"
