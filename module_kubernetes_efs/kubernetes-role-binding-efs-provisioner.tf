@@ -1,11 +1,14 @@
 resource "kubernetes_role_binding" "demo-kubernetes-role-binding-efs-provisioner" {
   metadata {
     name = "terraform-demo-kubernetes-role-binding-efs-provisioner-leader-locking"
+    labels = {
+      app = "efs-provisioner-role-binding-leader-locking"
+    }
   }
   subject {
     kind      = "ServiceAccount"
     name      = "${kubernetes_service_account.demo-kubernetes-service-account-efs-provisioner.metadata.0.name}"
-    # namespace = "${kubernetes_namespace.demo-kubernetes-namespace.metadata.0.name}"
+    namespace = "${kubernetes_namespace.demo-kubernetes-namespace.metadata.0.name}"
   }
   role_ref {
     kind      = "Role"

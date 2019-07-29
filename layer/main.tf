@@ -2,13 +2,13 @@ terraform {
   required_version = ">= 0.11.7"
 }
 
-
 module "aws_resources_module_network" {
   source  = "../module_network"
 
   providers = {
     "aws"  = "aws.aws_services"
   }
+
   cluster-name = "${var.cluster-name}"
   common_tags = "${var.common_tags}"
 }
@@ -59,11 +59,12 @@ module "aws_resources_module_kube_config" {
   kubeconfig_output = "${module.aws_resources_module_eks.kubeconfig}"
   config_map_aws_auth_output = "${module.aws_resources_module_eks.config_map_aws_auth}"
   eks_admin_service_account_output = "${module.aws_resources_module_eks.eks_admin_service_account}"
+
   depends_on = ["${module.aws_resources_module_eks.eks_worker_node_autoscaling_group_id}","${module.aws_resources_module_eks.kubeconfig}","${module.aws_resources_module_eks.config_map_aws_auth}","${module.aws_resources_module_eks.eks_admin_service_account}"]
 }
 
-module "aws_resources_module_kubernetes" {
-  source  = "../module_kubernetes"
+module "aws_resources_module_kubernetes_efs" {
+  source  = "../module_kubernetes_efs"
 
   providers = {
     "kubernetes" = "kubernetes.kubernetes_services"

@@ -1,14 +1,13 @@
 resource "kubernetes_persistent_volume_claim" "demo-eks-persistent-volume-claim-efs-provisioner" {
   metadata {
     name = "terraform-demo-eks-persistent-volume-claim-efs-provisioner"
-    # namespace = "${kubernetes_namespace.demo-kubernetes-namespace.metadata.0.name}"
-    
+    namespace = "${kubernetes_namespace.demo-kubernetes-namespace.metadata.0.name}"
     annotations {
       "volume.beta.kubernetes.io/storage-class" = "${kubernetes_storage_class.demo-kubernetes-storage-class-efs-provisioner.metadata.0.name}"
     }
-    # labels {
-    #   app = "terraform-demo-eks-persistent-volume-claim-efs-provisioner"
-    # }
+    labels {
+      app = "efs-provisioner-persistent-volume-claim"
+    }
   }
   spec {
     access_modes = ["ReadWriteMany"]
@@ -18,5 +17,4 @@ resource "kubernetes_persistent_volume_claim" "demo-eks-persistent-volume-claim-
       }
     }
   }
-#   depends_on = ["kubernetes_deployment.demo-kubernetes-deployment-efs-provisioner","kubernetes_storage_class.demo-kubernetes-storage-class-efs-provisioner"]
 }

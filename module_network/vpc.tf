@@ -20,6 +20,9 @@ resource "aws_subnet" "demo-subnet-public" {
     "Name", "terraform-demo-eks-subnet-public-${count.index}",
     "kubernetes.io/cluster/${var.cluster-name}", "owned",
     "kubernetes.io/role/elb", "${count.index}",
+    "alb.ingress.kubernetes.io/scheme", "internet-facing",
+    "alb.ingress.kubernetes.io/subnets", "",
+    "kubernetes.io/ingress.class", "alb"
   ))}"
 }
 

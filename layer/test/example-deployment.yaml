@@ -1,0 +1,28 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: efs-test
+  namespace: terraform-demo-kubernetes-namespace
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: efs-test
+    spec:
+      serviceAccount: efs-provisioner
+      containers:
+      - name: efs-test
+        image: jenkins/jenkins
+        env:
+            - name: JENKINS_HOME
+              value: /efs/jenkins
+        volumeMounts:
+          - mountPath: /efs/jenkins
+            name: efs
+      volumes:
+        - name: efs
+          persistentVolumeClaim:
+            claimName: terraform-demo-eks-persistent-volume-claim-efs-provisioner

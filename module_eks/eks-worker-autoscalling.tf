@@ -1,6 +1,6 @@
 resource "aws_autoscaling_group" "demo-autoscaling-group-eks-worker-node" {
-  desired_capacity     = 1
-  max_size             = 1
+  desired_capacity     = 2
+  max_size             = 2
   min_size             = 1
   name                 = "terraform-demo-autoscaling-group-eks-worker-node"
   vpc_zone_identifier  = ["${var.web_subnet_ids}"]
@@ -28,18 +28,6 @@ resource "aws_autoscaling_group" "demo-autoscaling-group-eks-worker-node" {
   tag {
     key                 = "BusinessUnit"
     value               = "${lookup(var.common_tags, "BusinessUnit")}"
-    propagate_at_launch = true
-  }
-
-  tag {
-    key                 = "kubernetes.io/cluster/${var.cluster-name}"
-    value               = "owned"
-    propagate_at_launch = true
-  }
-
-  tag{
-    key                 = "KubernetesCluster"
-    value               = "${var.cluster-name}"
     propagate_at_launch = true
   }
 

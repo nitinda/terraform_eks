@@ -1,6 +1,10 @@
 resource "kubernetes_cluster_role" "demo-kubernetes-cluster-role-efs-provisioner" {
   metadata {
     name = "terraform-demo-kubernetes-cluster-role-efs-provisioner-runner"
+
+    labels {
+      app = "efs-provisioner-cluster-role-runner"
+    }
   }
   rule {
     api_groups = [""]
@@ -21,5 +25,10 @@ resource "kubernetes_cluster_role" "demo-kubernetes-cluster-role-efs-provisioner
     api_groups = [""]
     resources  = ["events"]
     verbs      = ["create", "update", "patch"]
+  }
+  rule {
+    api_groups = [""]
+    resources  = ["endpoints"]
+    verbs      = ["get", "list", "watch", "create", "update", "patch"]
   }
 }

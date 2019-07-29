@@ -47,7 +47,7 @@ data:
         - system:bootstrappers
         - system:nodes
   mapUsers: |
-    - userarn: arn:aws:iam::735276988266:user/nitin-test-cli
+    - userarn: arn:aws:iam::${data.aws_caller_identity.demo-current.account_id}:user/nitin-test-cli
       username: nitin-test-cli
       groups:
         - system:masters
@@ -97,3 +97,22 @@ output "eks_admin_service_account" {
 output "eks_worker_node_autoscaling_group_id" {
   value = "${aws_autoscaling_group.demo-autoscaling-group-eks-worker-node.id}"
 }
+
+# EKS Cluster
+
+
+output "eks_cluster_name" {
+  value = "${aws_eks_cluster.demo-eks-cluster.id}"
+}
+
+# output "eks_cluster_endpoint" {
+#   value = "${aws_eks_cluster.demo-eks-cluster.endpoint}"
+# }
+
+# output "eks_cluster_certificate_authority_data" {
+#   value = "${aws_eks_cluster.demo-eks-cluster.certificate_authority.0.data}"
+# }
+
+# output "eks_cluster_token" {
+#   value = "${aws_eks_cluster.demo-eks-cluster.token}"
+# }

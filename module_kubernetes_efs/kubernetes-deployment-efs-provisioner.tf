@@ -1,10 +1,10 @@
 resource "kubernetes_deployment" "demo-kubernetes-deployment-efs-provisioner" {
   metadata {
       name = "terraform-demo-kubernetes-deployment-efs-provisioner"
-    #   labels {
-    #       app = "terraform-demo-kubernetes-deployment-efs-provisioner"
-    #   }
-    #   namespace = "${kubernetes_namespace.demo-kubernetes-namespace.metadata.0.name}"
+      labels {
+          app = "efs-provisioner-deployment"
+      }
+      namespace = "${kubernetes_namespace.demo-kubernetes-namespace.metadata.0.name}"
   }
   spec {
     replicas = 1

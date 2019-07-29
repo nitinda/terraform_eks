@@ -73,7 +73,8 @@ resource "aws_iam_role_policy" "demo-iam-role-poicy-worker-node" {
             "Effect": "Allow",
             "Action": [
                 "ec2:*Volume*",
-                "ec2:*Snapshot*"
+                "ec2:*Snapshot*",
+                "ec2:DescribeAccountAttributes"
             ],
             "Resource": "*"
         },

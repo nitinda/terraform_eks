@@ -1,0 +1,141 @@
+# # ---
+# # apiVersion: v1
+# # kind: ConfigMap
+# # metadata:
+# #   name: config-map-efs-provisioner
+# # data:
+# #   file.system.id: fs-b91a3ae0
+# #   aws.region: eu-central-1
+# #   provisioner.name: efs-provisioner/aws-efs
+# #   dns.name: ""
+# #   jenkins.home.name: /efs/jenkins
+# # ---
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: deployment-efs-provisioner-jenkins
+  namespace: terraform-demo-kubernetes-namespace
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate 
+  template:
+    metadata:
+      labels:
+        app: efs-provisioner
+    spec:
+      serviceAccount: efs-provisioner
+      containers:
+        - name: container-efs-provisioner-jenkins
+          image: quay.io/external_storage/efs-provisioner:latest
+          env:
+            - name: FILE_SYSTEM_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: config-map-efs-provisioner
+                  key: file.system.id
+            - name: AWS_REGION
+              valueFrom:
+                configMapKeyRef:
+                  name: config-map-efs-provisioner
+                  key: aws.region
+            - name: DNS_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: config-map-efs-provisioner
+                  key: dns.name
+                  optional: true
+            - name: PROVISIONER_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: config-map-efs-provisioner
+                  key: provisioner.name
+          volumeMounts:
+            - name: pv-volume
+              mountPath: /persistentvolumes
+      volumes:
+        - name: pv-volume
+          nfs:
+            server: fs-f70220ae.efs.eu-central-1.amazonaws.com
+            path: /
+# # ---
+# # kind: StorageClass
+# # apiVersion: storage.k8s.io/v1
+# # metadata:
+# #   name: storageclass-aws-efs-provisioner
+# # provisioner: efs-provisioner/aws-efs
+# # allowVolumeExpansion: true
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: persistent-volume-efs-provisioner
+  namespace: terraform-demo-kubernetes-namespace
+  annotations:
+    volume.beta.kubernetes.io/storage-class: "terraform-demo-kubernetes-storageclass-aws-efs-provisioner"
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Mi
+# # ---
+# # kind: ClusterRole
+# # apiVersion: rbac.authorization.k8s.io/v1
+# # metadata:
+# #   name: efs-provisioner-runner
+# # rules:
+# #   - apiGroups: [""]
+# #     resources: ["persistentvolumes"]
+# #     verbs: ["get", "list", "watch", "create", "delete"]
+# #   - apiGroups: [""]
+# #     resources: ["persistentvolumeclaims"]
+# #     verbs: ["get", "list", "watch", "update"]
+# #   - apiGroups: ["storage.k8s.io"]
+# #     resources: ["storageclasses"]
+# #     verbs: ["get", "list", "watch"]
+# #   - apiGroups: [""]
+# #     resources: ["events"]
+# #     verbs: ["create", "update", "patch"]
+# # ---
+# # kind: ClusterRoleBinding
+# # apiVersion: rbac.authorization.k8s.io/v1
+# # metadata:
+# #   name: run-efs-provisioner
+# # subjects:
+# #   - kind: ServiceAccount
+# #     name: efs-provisioner
+# #      # replace with namespace where provisioner is deployed
+# #     namespace: default
+# # roleRef:
+# #   kind: ClusterRole
+# #   name: efs-provisioner-runner
+# #   apiGroup: rbac.authorization.k8s.io
+# # ---
+# # kind: Role
+# # apiVersion: rbac.authorization.k8s.io/v1
+# # metadata:
+# #   name: leader-locking-efs-provisioner
+# # rules:
+# #   - apiGroups: [""]
+# #     resources: ["endpoints"]
+# #     verbs: ["get", "list", "watch", "create", "update", "patch"]
+# # ---
+# # kind: RoleBinding
+# # apiVersion: rbac.authorization.k8s.io/v1
+# # metadata:
+# #   name: leader-locking-efs-provisioner
+# # subjects:
+# #   - kind: ServiceAccount
+# #     name: efs-provisioner
+# #     # replace with namespace where provisioner is deployed
+# #     namespace: default
+# # roleRef:
+# #   kind: Role
+# #   name: leader-locking-efs-provisioner
+# #   apiGroup: rbac.authorization.k8s.io
+# # ---
+# # kind: ServiceAccount
+# # apiVersion: v1
+# # metadata:
+# #   name: efs-provisioner-new

@@ -1,13 +1,8 @@
 resource "kubernetes_namespace" "demo-kubernetes-namespace" {
   metadata {
-    annotations {
-      name = "terraform-demo-kubernetes-namespace-annotation"
-    }
-
     labels {
-      mylabel = "terraform-demo-kubernetes-namespace-label"
+      app = "efs-provisioner-namespace"
     }
-
     name = "terraform-demo-kubernetes-namespace"
   }
 }

@@ -1,0 +1,20 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+   name: efs-jenkins
+   namespace: default
+   annotations:
+    volume.beta.kubernetes.io/storage-class: "aws-efs"
+spec:
+  # storageClassName: aws-efs
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  # mountOptions:
+  #   - hard
+  #   - nfsvers=4.1
+  # nfs:
+  #   path: /mnt/efs
+  #   server: "fs-b91a3ae0.efs.eu-central-1.amazonaws.com"
