@@ -4,7 +4,7 @@ resource "kubernetes_deployment" "demo-kubernetes-deployment-efs-provisioner" {
       labels {
           app = "efs-provisioner-deployment"
       }
-      namespace = "${kubernetes_namespace.demo-kubernetes-namespace.metadata.0.name}"
+      namespace = "${kubernetes_namespace.demo-kubernetes-namespace-efs-jenkins-master.metadata.0.name}"
   }
   spec {
     replicas = 1

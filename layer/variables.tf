@@ -20,3 +20,9 @@ variable common_tags {
     BusinessUnit = "Platform Team"
   }  
 }
+
+####
+# data "aws_kms_alias" "demo-key-alias" {
+#   provider = "aws.aws_services"
+#   name = "alias/uki-cmk-ebs"
+# }

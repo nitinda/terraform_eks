@@ -1,7 +1,7 @@
 resource "kubernetes_config_map" "demo-kubernetes-config-map-efs-provisioner" {
   metadata {
     name = "config-map-efs-provisioner"
-    namespace = "${kubernetes_namespace.demo-kubernetes-namespace.metadata.0.name}"
+    namespace = "${kubernetes_namespace.demo-kubernetes-namespace-efs-jenkins-master.metadata.0.name}"
 
     labels {
       name = "efs-provisioner-config-map"

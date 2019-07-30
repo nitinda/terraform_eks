@@ -19,10 +19,9 @@ resource "aws_subnet" "demo-subnet-public" {
   tags = "${merge(var.common_tags, map(
     "Name", "terraform-demo-eks-subnet-public-${count.index}",
     "kubernetes.io/cluster/${var.cluster-name}", "owned",
-    "kubernetes.io/role/elb", "${count.index}",
-    "alb.ingress.kubernetes.io/scheme", "internet-facing",
-    "alb.ingress.kubernetes.io/subnets", "",
-    "kubernetes.io/ingress.class", "alb"
+    "kubernetes.io/role/elb", "1",
+    "kubernetes.io/ingress.class", "alb",
+    "alb.ingress.kubernetes.io/scheme", "internet-facing",    
   ))}"
 }
 
@@ -35,7 +34,8 @@ resource "aws_subnet" "demo-subnet-private" {
   tags = "${merge(var.common_tags, map(
     "Name", "terraform-demo-eks-subnet-private-${count.index}",
     "kubernetes.io/cluster/${var.cluster-name}", "owned",
-    "kubernetes.io/role/internal-elb", "${count.index}",
+    "kubernetes.io/role/internal-elb", "1",
+    "alb.ingress.kubernetes.io/scheme", "internal",
   ))}"
 }
 

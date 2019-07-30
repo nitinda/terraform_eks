@@ -16,6 +16,14 @@ data "aws_eks_cluster_auth" "demo-data-aws-eks-cluster-auth" {
   name = "${module.aws_resources_module_eks.eks_cluster_name}"
 }
 
+data "aws_acm_certificate" "demo-aws-acm-certificate" {
+  provider    = "aws.aws_services"
+  domain      = "*.tuiuki.io"
+  statuses    = ["ISSUED"]
+  types       = ["AMAZON_ISSUED"]
+  most_recent = true
+}
+
 provider "kubernetes" {
   alias = "kubernetes_services"
   # config_path = "${module.aws_resources_module_kube_config.kubeconfig_location}"

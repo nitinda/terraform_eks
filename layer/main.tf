@@ -2,6 +2,17 @@ terraform {
   required_version = ">= 0.11.7"
 }
 
+module "aws_resources_module_kms" {
+  source = "../module_kms"
+
+  providers = {
+    "aws"  = "aws.aws_services"
+  }
+
+  cluster-name = "${var.cluster-name}"
+  common_tags = "${var.common_tags}"
+}
+
 module "aws_resources_module_network" {
   source  = "../module_network"
 
@@ -77,4 +88,22 @@ module "aws_resources_module_kubernetes_efs" {
   role_binding_api_group = "rbac.authorization.k8s.io"
 
   depends_on = ["${module.aws_resources_module_eks.eks_worker_node_autoscaling_group_id}","${module.aws_resources_module_eks.kubeconfig}","${module.aws_resources_module_kube_config.kubeconfig_location}","${module.aws_resources_module_kube_config.null_resource_config_map_aws_auth_id}"]
+}
+
+module "aws_resources_module_kubernetes_ebs" {
+  source  = "../module_kubernetes_ebs"
+
+  providers = {
+    "kubernetes" = "kubernetes.kubernetes_services"
+  }
+
+  cluster-name = "${var.cluster-name}"
+  common_tags = "${var.common_tags}"
+  vpc_id = "${module.aws_resources_module_network.vpc_id}"
+  ebs_provisioner = "kubernetes.io/aws-ebs"
+  kms_key_id = "${module.aws_resources_module_kms.kms_key_ebs_volume_arn}"
+  cluster_role_binding_api_group = "rbac.authorization.k8s.io"
+  certificate_arn = "${data.aws_acm_certificate.demo-aws-acm-certificate.arn}"
+  
+  depends_on = ["${module.aws_resources_module_kms.kms_key_ebs_volume_arn}","${module.aws_resources_module_eks.eks_worker_node_autoscaling_group_id}","${module.aws_resources_module_eks.kubeconfig}","${module.aws_resources_module_kube_config.kubeconfig_location}","${module.aws_resources_module_kube_config.null_resource_config_map_aws_auth_id}"]
 }

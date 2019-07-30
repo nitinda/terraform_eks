@@ -1,7 +1,7 @@
-resource "kubernetes_service" "demo-kubernetes-service-jenkins-efs" {
+resource "kubernetes_service" "demo-kubernetes-service-efs-jenkins-master" {
   metadata {
-    name = "terraform-demo-kubernetes-service-jenkins-efs"
-    namespace = "${kubernetes_namespace.demo-kubernetes-namespace.metadata.0.name}"
+    name = "terraform-demo-kubernetes-service-efs-jenkins-master"
+    namespace = "${kubernetes_namespace.demo-kubernetes-namespace-efs-jenkins-master.metadata.0.name}"
   }
 
   spec {

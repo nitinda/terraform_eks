@@ -1,9 +1,9 @@
 resource "kubernetes_deployment" "demo-kubernetes-deployment-efs-jenkins" {
   metadata {
       name = "terraform-demo-kubernetes-deployment-efs-jenkins"
-      namespace = "${kubernetes_namespace.demo-kubernetes-namespace.metadata.0.name}"
+      namespace = "${kubernetes_namespace.demo-kubernetes-namespace-efs-jenkins-master.metadata.0.name}"
       labels {
-        run = "efs-jenkins-deployment"
+        run = "efs-jenkins-master-deployment"
       }
   }
   spec {
@@ -11,13 +11,13 @@ resource "kubernetes_deployment" "demo-kubernetes-deployment-efs-jenkins" {
 
     selector {
       match_labels {
-        run = "efs-jenkins-deployment"
+        run = "efs-jenkins-master-deployment"
       }
     }
     template {
       metadata {
         labels {
-          run = "efs-jenkins-deployment"
+          run = "efs-jenkins-master-deployment"
         }
       }
       spec {
@@ -25,7 +25,7 @@ resource "kubernetes_deployment" "demo-kubernetes-deployment-efs-jenkins" {
           image = "jenkins/jenkins"
           name  = "terraform-demo-container-efs-jenkins"
           port {
-              container_port = 8080
+            container_port = 8080
           }
           env {
               name = "JENKINS_HOME"

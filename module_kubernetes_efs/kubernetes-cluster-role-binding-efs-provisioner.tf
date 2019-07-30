@@ -8,7 +8,7 @@ resource "kubernetes_cluster_role_binding" "demo-kubernetes-cluster-role-binding
   subject {
     kind      = "ServiceAccount"
     name      = "${kubernetes_service_account.demo-kubernetes-service-account-efs-provisioner.metadata.0.name}"
-    namespace = "${kubernetes_namespace.demo-kubernetes-namespace.metadata.0.name}"
+    namespace = "${kubernetes_namespace.demo-kubernetes-namespace-efs-jenkins-master.metadata.0.name}"
   }
   role_ref {
     kind      = "ClusterRole"
