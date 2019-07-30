@@ -29,9 +29,8 @@ terrafomr apply --auto-approve
 
 
 ## Manual Steps post deployment to access the dashboard
-
+# Export Kubeconfig
 ```
-- Export Kubeconfig
 export KUBECONFIG=${PWD}/kubeconfig
 kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep eks-admin | awk '{print $1}')
 ```
