@@ -1,6 +1,14 @@
-# Terraform Code For AWS EKS cluster with persistent storage EBS/EFS
+# AWS EKS cluster with persistent storage EBS/EFS
 
-Deploy a AWS EKS cluster with persistent storage EBS (Dynamic Storage) and EFS
+Deploy a AWS EKS cluster with persistent storage EBS (Dynamic Storage) and EFS.
+
+## Prerequisites
+```md
+terraform (version : 0.11.14)
+kubctl
+aws-iam-authenticator
+```
+
 
 ## What resources are created
 
