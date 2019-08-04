@@ -74,8 +74,8 @@ module "aws_resources_module_kube_config" {
   depends_on = ["${module.aws_resources_module_eks.eks_worker_node_autoscaling_group_id}","${module.aws_resources_module_eks.kubeconfig}","${module.aws_resources_module_eks.config_map_aws_auth}","${module.aws_resources_module_eks.eks_admin_service_account}"]
 }
 
-module "aws_resources_module_kubernetes_efs" {
-  source  = "../module_kubernetes_efs"
+module "aws_resources_module_kubernetes_jenkins_master_efs" {
+  source  = "../module_kubernetes_jenkins_master_efs"
 
   providers = {
     "kubernetes" = "kubernetes.kubernetes_services"
@@ -90,8 +90,8 @@ module "aws_resources_module_kubernetes_efs" {
   depends_on = ["${module.aws_resources_module_eks.eks_worker_node_autoscaling_group_id}","${module.aws_resources_module_eks.kubeconfig}","${module.aws_resources_module_kube_config.kubeconfig_location}","${module.aws_resources_module_kube_config.null_resource_config_map_aws_auth_id}"]
 }
 
-module "aws_resources_module_kubernetes_ebs" {
-  source  = "../module_kubernetes_ebs"
+module "aws_resources_module_kubernetes_jenkins_master_ebs" {
+  source  = "../module_kubernetes_jenkins_master_ebs"
 
   providers = {
     "kubernetes" = "kubernetes.kubernetes_services"
